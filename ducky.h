@@ -5,28 +5,34 @@
 
 //Config and Misc
 
-void setLedPin		(int pin);
+void setLedPin			(int pin);
 
-void setLed			(bool state);
+void setLed				(bool state);
 
-void setDelay		(int del);
+void setDelay			(int del);
 
-void wait			(int time);
+void wait				(int time);
 
-void initialDelay	();
+void initialDelay		();
 
 //Primitives
 
-void typeString		(char * str);
+void typeString			(char * str);
 
-void typeChar		(char c);
+void typeChar			(char c);
 
-void combo			(int mods, char c);
+void combo				(int mods, char c);
 
 //Compound
 
-void typeLine		(char * line);
+void typeLine			(char * line);
 
-void spotlight		(char * search);
+void spotlight			(char * text);//Mac Specific
 
-void enterCommand	(char * cmd);
+void run				(char * text);//Windows Specific
+
+void enterCommandMac	(char * cmd);
+
+void enterCommandWin	(char * cmd);
+
+void enterCommandLinux	(char * cmd);

@@ -72,16 +72,37 @@ void typeLine(char * line)
 	typeChar('\n');
 }
 
-void spotlight(char * search)
+void spotlight(char * text)
 {
 	combo(GUI, ' ');
-	typeLine(search);
+	typeLine(text);
 }
 
-void enterCommand(char * cmd)
+void run(char * text)
 {
-	spotlight("term");
+	combo(GUI, 'r');
+	typeLine(text);
+}
+
+void enterCommandMac(char * cmd)
+{
+	char text[] = "term";
+	spotlight(text);
 	wait(5);
-	typeString(cmd);
-	typeChar('\n');
+	typeLine(cmd);
+}
+
+void enterCommandWin(char * cmd)
+{
+	char text[] = "cmd";
+	run(text);
+	wait(10);
+	typeLine(cmd);
+}
+
+void enterCommandLinux(char * cmd)
+{
+	combo(CTRL | ALT, 't');
+	wait(5);
+	typeLine(cmd);
 }
