@@ -1,15 +1,19 @@
 #include "ducky.h"
 
-#define WINPIN 0
-#define MACPIN 1
-#define LINUXPIN 2
+#define WINDOWS 1
+#define MAC 2
+#define LINUX 3
 
 void setup()
 {
 	//Initialise pins
-	pinMode(WINPIN, INPUT_PULLUP);
-	pinMode(MACPIN, INPUT_PULLUP);
-	pinMode(LINUXPIN, INPUT_PULLUP);
+	pinMode(1, INPUT_PULLUP);
+	pinMode(2, INPUT_PULLUP);
+	pinMode(4, INPUT_PULLUP);
+	pinMode(5, INPUT_PULLUP);
+	pinMode(6, INPUT_PULLUP);
+	pinMode(7, INPUT_PULLUP);
+	pinMode(8, INPUT_PULLUP);
 
 	//Initialise ducky
 	setLedPin(11);
@@ -17,25 +21,52 @@ void setup()
 	setDelay(100);
 	wait(10);
 
-	int win = digitalRead(WINPIN);
-	int mac = digitalRead(MACPIN);
-	int linux = digitalRead(LINUXPIN);
+	//Read DIP switch
+	int dip1 = digitalRead(8) == LOW ? 1 : 0;
+	int dip2 = digitalRead(7) == LOW ? 1 : 0;
+	int dip3 = digitalRead(6) == LOW ? 1 : 0;
+	int dip4 = digitalRead(5) == LOW ? 1 : 0;
+	int dip5 = digitalRead(4) == LOW ? 1 : 0;
+	int dip6 = digitalRead(3) == LOW ? 1 : 0;
+	int dip7 = digitalRead(2) == LOW ? 1 : 0;
+	int dip8 = digitalRead(1) == LOW ? 1 : 0;
 
-	if(win == LOW)
+	int os = 0;
+
+	if(dip1)
+		os = WINDOWS;
+	else if(dip2)
+		os = MAC;
+	else if(dip3)
+		os = LINUX;
+
+	int op = dip4 << 4 | dip5 << 3 | dip6 << 2 | dip7 << 1 | dip8 << 0;
+
+
+	char * command = (char *)"";
+	switch (op)
 	{
-		char commandWin[] = "start \"\" https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-		enterCommandWin(commandWin);
+	    case 0:
+	    	if(os == WINDOWS)
+				command = (char *)"start \"\" https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+	    	else if(os == MAC)
+				command = (char *)"osascript -e \"set Volume 10\";open https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+	    	else if(os == LINUX)
+	    		command = (char *)"pactl set-sink-mute 0 0; pactl set-sink-volume 0 100%; amixer set Master unmute; amixer sset 'Master' 100%; sensible-browser https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+	    	break;
+	    case 1:
+	    	if(os == MAC || os == LINUX)
+	    		command = (char *)"curl parrot.live";
+	    default:
+	    	break;
 	}
-	else if(mac == LOW)
-	{
-		char commandMac[] = "osascript -e \"set Volume 10\";open https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-		enterCommandMac(commandMac);
-	}
-	else if(linux == LOW)
-	{
-		char commandLinux[] = "pactl set-sink-mute 0 0; pactl set-sink-volume 0 100%; amixer set Master unmute; amixer sset 'Master' 100%; sensible-browser https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-		enterCommandLinux(commandLinux);
-	}
+
+	if(os == WINDOWS)
+		enterCommandWin(command);
+	else if(os == MAC)
+		enterCommandMac(command);
+	else if(os == LINUX)
+		enterCommandLinux(command);
 
 	setLed(true);
 }
