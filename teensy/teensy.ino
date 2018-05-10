@@ -1,4 +1,4 @@
-#include "ducky.h"
+#include "duckyTeensy.h"
 
 #define WINDOWS 1
 #define MAC 2
@@ -42,7 +42,6 @@ void setup()
 
 	int op = dip4 << 4 | dip5 << 3 | dip6 << 2 | dip7 << 1 | dip8 << 0;
 
-
 	char * command = (char *)"";
 	switch (op)
 	{
@@ -52,7 +51,7 @@ void setup()
 	    	else if(os == MAC)
 				command = (char *)"osascript -e \"set Volume 10\";open https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 	    	else if(os == LINUX)
-	    		command = (char *)"pactl set-sink-mute 0 0; pactl set-sink-volume 0 100%; amixer set Master unmute; amixer sset 'Master' 100%; sensible-browser https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+	    		command = (char *)"pactl set-sink-mute 0 0; pactl set-sink-volume 0 100%; amixer set Master unmute; amixer sset 'Master' 100%; xdg-open https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 	    	break;
 	    case 1:
 	    	if(os == MAC || os == LINUX)
